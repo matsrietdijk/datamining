@@ -26,7 +26,9 @@ module CMD
     type = options[:type]
     length = options[:length] || false
     default = options[:default] || false
+    allowed = options[:in] || false
 
+    query = "#{query} (#{allowed.join('/')}) " if allowed
     query = "#{query}(#{default}) " if default
     w query, nl: false
     input = gets.strip
@@ -34,22 +36,36 @@ module CMD
     case type
     when :file
       while !File.exist? input
-        w "File doesn't exist", color: :red
-        w query, nl: false
-        input = gets.strip
-        input = default if input.empty?
+        input = faulty_input "File doesn't exist", query, default
       end
     when :numeric
       if length
         while length.to_i < input.to_i
-          w "Invalid column index (#{input})", color: :red
-          w query, nl: false
-          input = gets.strip
-          input = default if input.empty?
+          input = faulty_input "Invalid column index (#{input})", query, default
         end
       end
       input = input.to_i
+    when :boolean
+      input = !!input
+    when :string
+      if allowed
+        while !check_input(input, allowed)
+          input = faulty_input "Invalid value, not in allowed values [#{allowed.join(', ')}]", query, default
+        end
+      end
     end
+    input
+  end
+
+  def self.check_input input, allowed_values
+    allowed_values.include?(input)
+  end
+
+  def self.faulty_input message, query, default
+    w message, color: :red
+    w query, nl: false
+    input = gets.strip
+    input = default if input.empty? && default
     input
   end
 end
