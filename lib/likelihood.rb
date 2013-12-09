@@ -15,18 +15,23 @@ module Likelihood
     end
 
     likelihoods = {}
-    results.each_with_index do |row, index|
+    results.each_with_index do |column, index|
       yes = 0
       no  = 0
-      row.each do |key, attr|
+      column.each do |key, attr|
         yes += attr[:yes]
         no  += attr[:no]
       end
       likelihoods[ index ] = {}
-      row.each do |key, attr|
-        yess = (attr[:yes].to_f / yes.to_f).round(3)
-        nos  = (attr[:no].to_f / no.to_f).round(3)
-        likelihoods[ index ][ key ] = { yes: yess, no: nos}
+      if results.length - 1 == index
+        likelihoods[ index ][ :yes ] = (yes.to_f / rows.length.to_f).round(3)
+        likelihoods[ index ][ :no ] = (no.to_f / rows.length.to_f).round(3)
+      else
+        column.each do |key, attr|
+          yess = (attr[:yes].to_f / yes.to_f).round(3)
+          nos  = (attr[:no].to_f / no.to_f).round(3)
+          likelihoods[ index ][ key ] = { yes: yess, no: nos}
+        end
       end
     end
     likelihoods
@@ -63,11 +68,16 @@ module Likelihood
   def self.naive_bayes record, prob
     chance = {yes: 1.0, no: 1.0} # default val
     record.each do |column, attr|
-      chance[:yes] *= prob[ column.to_i ][ attr.to_sym ][ :yes ].to_f
-      chance[:no]  *= prob[ column.to_i ][ attr.to_sym ][ :no ].to_f
+      if column == record.keys.last.to_s
+        chance[:yes] *= prob[ column.to_i ][ :yes ].to_f
+        chance[:no]  *= prob[ column.to_i ][ :no ].to_f
+      else
+        chance[:yes] *= prob[ column.to_i ][ attr.to_sym ][ :yes ].to_f
+        chance[:no]  *= prob[ column.to_i ][ attr.to_sym ][ :no ].to_f
+      end
     end
-    CMD.w "Chance for yes: #{(chance[ :yes ] * 100 / (chance[:yes] + chance[:no])).round(2)}"
-    CMD.w "Chance for no: #{(chance[ :no ] * 100 / (chance[:yes] + chance[:no])).round(2)}"
+    CMD.w "Chance for yes: #{(chance[ :yes ] * 100.0 / (chance[:yes] + chance[:no])).round(2)}%"
+    CMD.w "Chance for no: #{(chance[ :no ] * 100.0 / (chance[:yes] + chance[:no])).round(2)}%"
   end
 end
 
