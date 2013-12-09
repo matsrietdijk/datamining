@@ -31,14 +31,15 @@ module CMD
     w query, nl: false
     input = gets.strip
     input = default if input.empty?
-    if type == :file
+    case type
+    when :file
       while !File.exist? input
         w "File doesn't exist", color: :red
         w query, nl: false
         input = gets.strip
         input = default if input.empty?
       end
-    elsif type == :numeric
+    when :numeric
       if length
         while length.to_i < input.to_i
           w "Invalid column index (#{input})", color: :red
