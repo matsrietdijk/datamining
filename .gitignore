@@ -1,0 +1,5 @@
+*.txt
+
+data/restaurant2.arff
+data/weerInteger.arff
+data/weerString.arff
