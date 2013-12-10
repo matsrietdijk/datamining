@@ -28,7 +28,11 @@ module CMD
       line.chomp!
       next unless line.include? "@attribute"
       parts = line.split
-      headers[ parts[1].downcase.to_sym ] = parts[2].gsub(/\{(.*)\}/, '\1').split(',')
+      if parts[2] == "NUMERIC"
+        headers[ parts[1].downcase.to_sym ] = :numeric
+      else
+        headers[ parts[1].downcase.to_sym ] = parts[2].gsub(/\{(.*)\}/, '\1').split(',')
+      end
     end
     headers
   end
@@ -41,6 +45,7 @@ module CMD
 
     query = "#{query} (#{allowed.join('/')}): " if allowed
     query = "#{query}(#{default}) " if default
+    query = query.ljust(10)
     w query, nl: false
     input = gets.strip
     input = default if input.empty?
