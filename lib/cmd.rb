@@ -22,6 +22,19 @@ module CMD
     rows
   end
 
+  def self.parse_headers file
+    headers = {}
+    File.read(file).gsub(/@data.*/m, '\1').chomp.each_line do |line|
+      line.chomp!
+      next unless line.include? "@attribute"
+      parts = line.split
+      headers[ parts[1].downcase.to_sym ] = parts[2].gsub(/\{(.*)\}/, '\1').split(',')
+    end
+
+    p headers
+    abort
+  end
+
   def self.get_input query, options = {}
     type = options[:type]
     length = options[:length] || false
