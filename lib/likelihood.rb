@@ -37,38 +37,18 @@ module Likelihood
     likelihoods
   end
 
-  def self.get_record
-    alternative  = CMD.get_input "Alternative", type: :string, in: ["yes", "no"]
-    bar          = CMD.get_input "Bar",         type: :string, in: ["yes", "no"]
-    friday_sat   = CMD.get_input "FridaySat",   type: :string, in: ["yes", "no"]
-    hunger       = CMD.get_input "Hunger",      type: :string, in: ["yes", "no"]
-    pat          = CMD.get_input "Patat",       type: :string, in: ["some", "full", "none"]
-    price        = CMD.get_input "Price",       type: :string, in: ["$", "$$", "$$$"]
-    rain         = CMD.get_input "Rain",        type: :string, in: ["yes", "no"]
-    res          = CMD.get_input "Res",         type: :string, in: ["yes", "no"]
-    est          = CMD.get_input "Est",         type: :string, in: ["0-10", "10-30", "30-60", "60+"]
-    type         = CMD.get_input "Type",        type: :string, in: ["burger", "french", "italian", "thai"]
-    wait         = CMD.get_input "Wait",        type: :string, in: ["yes", "no"]
-
-    {
-      "0" => alternative,
-      "1" => bar,
-      "2" => friday_sat,
-      "3" => hunger,
-      "4" => pat,
-      "5" => price,
-      "6" => rain,
-      "7" => res,
-      "8" => est,
-      "9" => type,
-      "10" => wait,
-    }
+  def self.get_record headers
+    records = {}
+    headers.each_with_index do |(header, possibilities), index|
+      records[ index ] = CMD.get_input header.to_s.capitalize, type: :string, in: possibilities
+    end
+    records
   end
 
   def self.naive_bayes record, prob
     chance = {yes: 1.0, no: 1.0} # default val
     record.each do |column, attr|
-      if column == record.keys.last.to_s
+      if column.to_i == record.keys.last.to_i
         chance[:yes] *= prob[ column.to_i ][ :yes ].to_f
         chance[:no]  *= prob[ column.to_i ][ :no ].to_f
       else

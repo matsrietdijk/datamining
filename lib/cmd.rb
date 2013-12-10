@@ -39,7 +39,7 @@ module CMD
     default = options[:default] || false
     allowed = options[:in] || false
 
-    query = "#{query} (#{allowed.join('/')}) " if allowed
+    query = "#{query} (#{allowed.join('/')}): " if allowed
     query = "#{query}(#{default}) " if default
     w query, nl: false
     input = gets.strip
