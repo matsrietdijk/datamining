@@ -107,8 +107,8 @@ module Likelihood
         chance[:no]  *= prob[ column.to_i ][ attr[ :value ].to_sym ][ :no ].to_f
       end
     end
-    CMD.w "Chance for yes: #{(chance[ :yes ] * 100.0 / (chance[:yes] + chance[:no])).round(2)}%"
-    CMD.w "Chance for no: #{(chance[ :no ] * 100.0 / (chance[:yes] + chance[:no])).round(2)}%"
+    CMD.w "Chance for yes: #{(chance[ :yes ] * 100.0 / (chance[:yes] + chance[:no])).round(2)}%", color: :green
+    CMD.w "Chance for no: #{(chance[ :no ] * 100.0 / (chance[:yes] + chance[:no])).round(2)}%", color: :green
   end
 
   def self.density value, mean, sd
