@@ -1,0 +1,26 @@
+@relation Restaurant.symbolic
+@attribute Alternative {yes,no}
+@attribute Bar {yes,no}
+@attribute FridaySat {yes,no}
+@attribute Hunger {yes,no}
+@attribute Pat {some,full,none}
+@attribute price NUMERIC
+@attribute Rain {yes,no}
+@attribute Res {yes,no}
+@attribute Est NUMERIC
+@attribute Type {burger,french,italian,thai}
+@attribute wait {yes,no}
+
+@data
+yes,no,no,yes,some,159,no,yes,8,french,yes
+yes,no,no,yes,full,20,no,no,45,thai,no
+no,yes,no,no,some,20,no,no,9,burger,yes
+yes,no,yes,yes,full,15,no,no,23,thai,yes
+yes,no,yes,no,full,132,no,yes,66,french,no
+no,yes,no,yes,some,90,yes,yes,3,italian,yes
+no,yes,no,no,none,24,yes,no,5,burger,no
+no,no,no,yes,some,65,yes,yes,7,thai,yes
+no,yes,yes,no,full,12,yes,no,76,burger,no
+yes,yes,yes,yes,full,121,no,yes,11,italian,no
+no,no,no,no,none,24,no,no,1,thai,no
+yes,yes,yes,yes,full,14,no,no,57,burger,yes
