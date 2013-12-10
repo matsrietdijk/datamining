@@ -1,7 +1,7 @@
 module Likelihood
 
   def self.calculate_probabilities rows, headers
-    numerics = find_numerics(rows, headers)
+    numerics = find_numerics(headers)
     results  = count_values(rows, numerics)
 
     likelihoods = {}
@@ -66,7 +66,7 @@ module Likelihood
     results
   end
 
-  def self.find_numerics rows, headers
+  def self.find_numerics headers
     numerics = []
     headers.each_with_index do |(key, value), index|
       numerics << index if value == :numeric
