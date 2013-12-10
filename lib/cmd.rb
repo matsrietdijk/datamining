@@ -30,9 +30,7 @@ module CMD
       parts = line.split
       headers[ parts[1].downcase.to_sym ] = parts[2].gsub(/\{(.*)\}/, '\1').split(',')
     end
-
-    p headers
-    abort
+    headers
   end
 
   def self.get_input query, options = {}
