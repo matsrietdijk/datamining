@@ -28,6 +28,12 @@ module Likelihood
           likelihoods[ index ][ :no ] = (no.to_f / rows.length.to_f).round(3)
         else
           column.each do |key, attr|
+            if attr[:yes] == 0 || attr[:no] == 0
+              attr[:yes] += 1
+              attr[:no]  += 1
+              yes += 1
+              no  += 1
+            end
             yess = (attr[:yes].to_f / yes.to_f).round(3)
             nos  = (attr[:no].to_f / no.to_f).round(3)
             likelihoods[ index ][ key ] = { yes: yess, no: nos}
