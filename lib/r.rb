@@ -67,45 +67,11 @@ module R
   end
 
   def self.group rows, column, options = {}
-    split = options[ :split ] || false
-    set = []
-    rows.each do |row|
-      set << {value: row[ column - 1 ].to_i, decision: row.last}
-    end
-    set = set.sort_by { |v| v[:value] }
-
-    last_decision = nil
-    last_value = nil
-    groups = []
-    current_group = 0
-    set.each do |item|
-      value = item[:value]
-      decision = item[:decision]
-      last_decision = last_decision || decision
-      last_value = last_value || value
-      if last_decision != decision
-        next if last_value == value
-        current_group += 1
-        last_decision = decision
-      end
-      last_value = value
-      groups[ current_group ] = {values: [], decision: decision} if groups[ current_group ].nil?
-      groups[ current_group ][:values] <<  value
-    end
-
-    CMD.w "Rules:"
-    if groups.length >= 2
-      groups.each_with_index do |group, index|
-        if groups.first == group
-          CMD.w "Values <= #{(group[:values].last + groups[index + 1][:values].first)/2} -> #{group[:decision]}"
-        elsif groups.last == group
-          CMD.w "Values > #{(group[:values].first + groups[index - 1][:values].last)/2} -> #{group[:decision]}"
-        else
-          CMD.w "#{(group[:values].first + groups[index - 1][:values].last)/2} < values <= #{(group[:values].last + groups[index + 1][:values].first)/2} -> #{group[:decision]}"
-        end
-      end
-    else
-      CMD.w "All values -> #{groups[0][:decision]}"
-    end
+    # split = options[ :split ] || false
+    # set = []
+    # rows.each do |row|
+    #   set << {value: row[ column - 1 ].to_i, decision: row.last}
+    # end
+    # set = set.sort_by { |v| v[:value] }
   end
 end

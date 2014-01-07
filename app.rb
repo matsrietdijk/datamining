@@ -2,7 +2,7 @@ require "csv"
 require_relative "lib/r"
 require_relative "lib/cmd"
 
-file    = CMD.get_input "Path to file: ", type: :file, default: "data/numeric_restaurant.arff"
+file    = CMD.get_input "Path to file: ", type: :file, default: "data/restaurant.arff"
 headers = CMD.parse_headers file
 rows    = CMD.parse file
 if File.read(file).include? "NUMERIC"
