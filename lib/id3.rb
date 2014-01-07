@@ -36,21 +36,20 @@ module ID3
       @data, @attributes, @default = data, attributes, default
     end
 
-    def train(data=@data, attributes=@attributes, default=@default)
+    def id3(data=@data, attributes=@attributes, default=@default)
       attributes = attributes.map {|e| e.to_s}
       initialize(attributes, data, default)
 
       # Remove samples with same attributes leaving most common classification
       data2 = data.inject({}) {|hash, d| hash[d.slice(0..-2)] ||= Hash.new(0); hash[d.slice(0..-2)][d.last] += 1; hash }.map{|key,val| key + [val.sort_by{ |k, v| v }.last.first]}
 
-      @tree = id3_train(data2, attributes, default)
+      @tree = id3_calculate(data2, attributes, default)
     end
 
-    def id3_train(data, attributes, default, used={})
+    def id3_calculate(data, attributes, default, used={})
       return default if data.empty?
 
       # return classification if all examples have the same classification
-      # does not work
       return data.first.last if data.classification.uniq.size == 1
 
       # Choose best attribute:
@@ -70,7 +69,7 @@ module ID3
       values = data.collect { |d| d[attributes.index(best.attribute)] }.uniq.sort
       partitions = values.collect { |val| data.select { |d| d[attributes.index(best.attribute)] == val } }
       partitions.each_with_index  { |examples, i|
-        tree[best][values[i]] = id3_train(examples, attributes-[values[i]], (data.classification.mode rescue 0), &fitness)
+        tree[best][values[i]] = id3_calculate(examples, attributes-[values[i]], (data.classification.mode rescue 0), &fitness)
       }
 
       tree
@@ -83,10 +82,6 @@ module ID3
       remainder = partitions.collect {|p| (p.size.to_f / data.size) * p.classification.entropy}.inject(0) {|i,s| s+=i }
 
       [data.classification.entropy - remainder, attributes.index(attribute)]
-    end
-
-    def predict(test)
-      descend(@tree, test)
     end
 
     def graph(filename)
