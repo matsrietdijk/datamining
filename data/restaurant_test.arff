@@ -1,0 +1,18 @@
+@relation Restaurant.symbolic
+@attribute Alternative {yes,no}
+@attribute Bar {yes,no}
+@attribute FridaySat {yes,no}
+@attribute Hunger {yes,no}
+@attribute Pat {some,full,none}
+@attribute price {$,$$,$$$}
+@attribute Rain {yes,no}
+@attribute Res {yes,no}
+@attribute Est {0-10,10-30,30-60,60+}
+@attribute Type {burger,french,italian,thai}
+@attribute wait {yes,no}
+
+@data
+yes,no,no,yes,some,$$$,no,yes,0-10,french,yes
+yes,no,no,yes,full,$,no,no,30-60,thai,no
+no,yes,no,no,some,$,no,no,0-10,burger,yes
+yes,no,yes,yes,full,$,no,no,10-30,thai,yes

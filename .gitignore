@@ -1,4 +1,5 @@
 *.txt
+*.png
 
 data/restaurant2.arff
 data/weerInteger.arff
