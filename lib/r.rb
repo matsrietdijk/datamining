@@ -67,11 +67,5 @@ module R
   end
 
   def self.group rows, column, options = {}
-    # split = options[ :split ] || false
-    # set = []
-    # rows.each do |row|
-    #   set << {value: row[ column - 1 ].to_i, decision: row.last}
-    # end
-    # set = set.sort_by { |v| v[:value] }
   end
 end
